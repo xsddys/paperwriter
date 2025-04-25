@@ -43,6 +43,5 @@
 *.tmproj.*
 *.sublime-workspace
 *.sublime-project
-.vscode/
 .idea/
 *.bak

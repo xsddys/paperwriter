@@ -1,0 +1,89 @@
+{
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.latex.outDir": "./tmp",
+    "latex-workshop.latex.recipe.default": "lastUsed",
+    
+    "latex-workshop.view.pdf.viewer": "tab",
+    
+    "latex-workshop.latex.recipes": [
+        // {
+        //     "name": "LNCS-BibTeX",
+        //     "tools": [
+        //         "pdflatex",
+        //         "bibtex",
+        //         "pdflatex",
+        //         "pdflatex"
+        //     ]
+        // },
+        {
+            "name": "LNCS-XeLaTeX-BibTeX",
+            "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex"
+            ]
+        },
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk"
+            ]
+        }
+    ],
+    
+    "latex-workshop.latex.tools": [
+        // {
+        //     "name": "pdflatex",
+        //     "command": "pdflatex",
+        //     "args": [
+        //         "-synctex=1",
+        //         "-interaction=nonstopmode",
+        //         "-file-line-error",
+        //         "-output-directory=./tmp",
+        //         "%DOC%"
+        //     ]
+        // },
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-output-directory=./tmp",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "./tmp/%DOCFILE%"
+            ]
+        },
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-bibtex",
+                "-outdir=./tmp",
+                "%DOC%"
+            ]
+        }
+    ],
+    
+    "latex-workshop.message.error.show": true,
+    "latex-workshop.message.warning.show": true,
+    "latex-workshop.intellisense.package.enabled": true,
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux", "*.bbl", "*.blg", "*.idx", "*.ind", "*.lof", 
+        "*.lot", "*.out", "*.toc", "*.acn", "*.acr", "*.alg", 
+        "*.glg", "*.glo", "*.gls", "*.fls", "*.log", "*.fdb_latexmk",
+        "*.snm", "*.nav", "*.dvi"
+    ]
+}
