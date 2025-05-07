@@ -1,0 +1,45 @@
+\section{Related Works}
+
+\subsection{GCN for Skeleton-based Recognition}
+
+Early approaches for skeleton-based action recognition primarily 
+relied on Recurrent Neural Networks (RNNs) \cite{ref4,ref5} to model 
+temporal dependencies and Convolutional Neural Networks (CNNs) 
+\cite{ref6} to process joint coordinates. While these methods achieved 
+reasonable performance, they struggled to capture the intrinsic spatial 
+relationships between joints.
+
+Since GCNs \cite{ref7,ref8} have emerged as the dominant 
+paradigm due to their ability to aggregate topology. Recent 
+advancements can be categorized into three directions:
+
+\subsubsection{Learnable Adjacency Matrix}: Early GCN implementations
+ \cite{ref7} relied on fixed topologies defined by natural bone 
+ connectivity, which limited their capacity to model synergistic joint 
+ correlations. Subsequent works \cite{ref8,ref9,ref10,ref11,re12,ref14,ref15,ref16} introduced learnable 
+ adjacency matrices to capture adaptive long-range dependencies beyond 
+ anatomical priors.
+
+\subsubsection{Temporal Modeling}: While spatial graph convolutions 
+have been extensively studied, temporal feature extraction remains 
+underexplored. Most approaches employ the multi-scale 
+temporal convolution modules \cite{ref9,ref10,ref11,ref12,ref13} or Use cross-frame 
+interaction convolutions \cite{ref15}, where stacked local temporal convolutions 
+struggle to model prolonged action dynamics. Our work addresses this by
+firstly introducing attention mechanisms in the temporal graph domain. The 
+proposed interval-sampled multi-scale attention dynamically weighs 
+feature importance across time steps, proved to capturing complex 
+interdependencies in multivariate skeleton sequences effectively. 
+
+%\cite{temporal-attention-useful}.这一篇引用放到后面去
+
+\subsubsection{Multi-modal Ensemble}: Shi et al. \cite{ref13} first 
+demonstrated that training separate models on distinct skelenton
+modalities, like joint or bone vectors, enhances robustness 
+through complementary semantics. Follow-up works \cite{ref9,ref11,ref12} 
+further validated the benefits of integrating modalities like motion 
+vectors. Building on this paradigm, we propose line-graph 
+augmentation—a novel modality that explicitly encodes angular 
+kinematics between adjacent bones, enabling richer ensemble representations.
+
+\subsection{Linear Self-attention}

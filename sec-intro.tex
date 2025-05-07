@@ -3,12 +3,7 @@
 Skeleton-based action recognition has emerged as a critical research 
 direction in computer vision, driven by its applications in healthcare 
 monitoring \cite{ref1}, human-computer interaction \cite{ref2}, and surveillance systems \cite{ref3}.
-Early approaches primarily relied on Recurrent Neural Networks (RNNs) \cite{ref4,ref5} 
-to model temporal dependencies and Convolutional Neural Networks (CNNs) \cite{ref6}
-to process joint coordinates as pseudo-images. While these methods achieved 
-reasonable performance, they struggled to capture the intrinsic spatial 
-relationships between joints, particularly for fine-grained actions 
-requiring nuanced motion analysis \cite{ref7}.
+
 
 
 The advent of Graph Convolutional Networks (GCNs) \cite{ref8} revolutionized the field by 
@@ -17,9 +12,56 @@ work like ST-GCN \cite{ref7} introduced spatial-temporal convolutions to jointly
 capture joint correlations across frames. Subsequent innovations proposed 
 learnable adjacency matrices \cite{ref9,ref10} and multi-scale aggregation 
 strategies \cite{multiscale} to enhance flexibility.Despite these advancements, 
-two critical limitations persist:
+two critical limitations persist: (1) While existing works predominantly focus on spatial topology modeling，
+the temporal feature extraction relies on multi-scale convolutions 
+that inadequately capture contextual dependencies across time. (2) Fixed prior topology inputs
+enforce a static inductive bias that restricts the network's ability to discover latent action-specific correlations.
 
-Subsequent paragraphs, however, are indented.
+
+Therefore, this paper proposes a novel architecture that advances skeleton-based action recognition through three pivotal innovations:
+
+
+First, we introduce a Temporal Element-wise Multiplication Cumsum 
+Attention (TEMCA) mechanism to address temporal contextualization. 
+While temporal modeling remains pivotal for skeleton-based action 
+recognition, existing approaches predominantly rely on multi-scale 
+temporal convolution modules \cite{ref9,ref10,ref11,ref12} that lack 
+specialized architectural design for capturing complex temporal 
+dependencies. To address this, we draw inspiration from the Token 
+Statistic Transformer (ToST) \cite{tost} to devise a multi-scale linear 
+attention mechanism. Our TEMCA employs dilated context windows to 
+establish hierarchical receptive fields, explicitly capturing both 
+local motion nuances and global phase transitions. 
+%这一段看字数不够加上去
+%This contrasts 
+%with conventional temporal convolutions in GCNs, whose rigid filter 
+%designs and linear aggregation strategies struggle to model 
+%non-sequential temporal relationships across action stages.
+
+%这个部分我不知道详细的实现，需要手动改一下
+Second, inspired by the activation-free method \cite{rewrite_stars}, we fundamentally redesign self-attention computation through 
+activation-free element-wise multiplication, resolving the efficiency 
+bottleneck of temporal modeling. 
+While preserving attention's dynamic weighting capability, TEMCA 
+accelerates training convergence compared to standard 
+ToST variants, yet maintains state-of-the-art accuracy. 
+
+%这一段话不够再加
+%This innovation proves particularly critical for skeleton sequences, 
+%where temporal relationships require lightweight yet expressive 
+%operators.
+
+Third, we propose a multi-modal skeleton representation through latent 
+topology discovery via line-graph augmentation. While multi-modal 
+learning, such as joint-bone ensembles \cite{ref9,ref10,ref11,ref13} has proven 
+effective in mitigating rigid structural priors, existing methods rely 
+on simplistic feature engineering, training separate models on linearly 
+transformed joint coordinates for late fusion. 
+Building on this paradigm, we introduce line-graph augmentation, a 
+novel skeletal modality that explicitly encodes angular kinematics 
+between adjacent bones. The ensemble of line-graph has been demonstrated 
+to capture richer semantic information, effectively boosting prediction 
+accuracy.
 
 基于骨架的动作识别已成为计算机视觉领域的关键研究方向，其应用在医疗健康监测\cite{ref1}、人机交互\cite{ref2}和监控系统\cite{ref3}的推动下快速发展。
 与基于 RGB 帧的动作识别相比，基于骨骼的方法具有关注动作本身和数据紧凑的特点\cite{skeleton-useful}。
