@@ -16,9 +16,33 @@ explicitly modeling skeletal topology through adjacency matrices. Pioneering
 work like ST-GCN \cite{ref7} introduced spatial-temporal convolutions to jointly 
 capture joint correlations across frames. Subsequent innovations proposed 
 learnable adjacency matrices \cite{ref9,ref10} and multi-scale aggregation 
-strategies \cite{ref11} to enhance flexibility.Despite these advancements, 
+strategies \cite{multiscale} to enhance flexibility.Despite these advancements, 
 two critical limitations persist:
 
 Subsequent paragraphs, however, are indented.
 
-一些中文字符。
+基于骨架的动作识别已成为计算机视觉领域的关键研究方向，其应用在医疗健康监测\cite{ref1}、人机交互\cite{ref2}和监控系统\cite{ref3}的推动下快速发展。
+与基于 RGB 帧的动作识别相比，基于骨骼的方法具有关注动作本身和数据紧凑的特点\cite{skeleton-useful}。
+其对环境变化具有鲁棒性，例如背景杂乱和光照变化 。骨骼序列仅捕获动作信息，而不受视觉条件的影响，这使得对时序信息的分析能够更直接地聚焦于动作本身。
+早期方法主要依赖循环神经网络(RNNs)\cite{ref4,ref5}建模时间依赖性，并利用卷积神经网络(CNNs)\cite{ref6}将关节坐标处理为伪图像。
+尽管这些方法取得了合理性能，但难以捕捉关节间固有的空间关系，特别是在需要精细运动分析的细粒度动作识别方面存在局限\cite{ref7}。
+
+图卷积网络(GCNs)\cite{ref8}的出现通过邻接矩阵显式建模骨骼拓扑结构，彻底改变了该领域。
+开创性工作如ST-GCN\cite{ref7}提出了时空卷积操作，以联合捕捉跨帧的关节相关性。
+后续研究通过可学习邻接矩阵\cite{ref9,ref10}和多尺度聚合策略\cite{multiscale}来增强模型灵活性。
+然而，至今为止，尚未有人在图卷积的时间域引入注意力机制。
+注意力机制非常适合对多元时间序列数据中不同特征之间的复杂相互作用和依赖关系进行建模，注意力可以学习在每个时间步动态地权衡不同输入特征的重要性\cite{temporal-attention-useful}。
+自从\cite{attention-is-all-you-need}提出了Transformer以来，变换器架构在机器学习、计算机视觉、自然语言处理等多个应用领域取得了最先进的性能
+\cite{bert} \cite{radford2019language} \cite{brown2020language} \cite{chen2020generative} \cite{dosovitskiy2020image}。
+自注意力最显著的特点是，将特征映射到查询、键和值空间中，并通过点积乘法来动态地加权值。
+然而，这种实现方式并不高效，将会导致注意力的计算复杂度为$O(n^2)$，其中$n$是输入序列的长度。
+
+近期，（Wu等人）通过变分编码率优化提出了Token Statistics Transformer (ToST)\cite{tost}，
+其核心贡献包括：
+\begin{enumerate}
+    \item 建立了MCR2目标的变分上界形式，实现大规模矩阵谱函数的可分解计算；
+    \item 提出Token Statistics Self-Attention (TSSA)机制，通过二阶矩统计替代传统注意力中的成对相似性计算，将复杂度从O(n2)降至O(n)；
+    \item 在视觉、语言等任务上验证了其与标准Transformer相当的性能。
+\end{enumerate}
+
+然而，我们在实验中注意到，ToST在处理骨骼数据时，由于其理论推导而存在的部分结构，实际上反而影响了模型的性能。（待续）
