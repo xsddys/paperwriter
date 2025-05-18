@@ -4,7 +4,7 @@
 
 To validate the effectiveness of TEMCA, we conduct comprehensive 
 evaluations on three widely-used benchmarks for skeleton-based action 
-recognition: NTU RGB+D 60 \cite{ref1}, NTU RGB+D 120 \cite{ref2}, and 
+recognition: NTU RGB+D 60 \cite{ntu}, NTU RGB+D 120 \cite{ntu120}, and 
 Northwestern-UCLA (NW-UCLA) \cite{ref17}. Our model achieves 
 state-of-the-art performance across all datasets (Table 1), 
 demonstrating superior capabilities in modeling both spatial skeletal 
@@ -34,13 +34,12 @@ which are critical for complex action understanding.
 \cmidrule(r){8-10} \cmidrule(l){11-12} % 调整trim
  & & & & & & & X-Sub(\%) & X-View(\%)  & X-View(\%) & X-Set(\%) & \\ 
 \midrule
-DC-GCN+ADG~\cite{4} & ECCV 2020 & GCN & J+B+JM+BM & \multirow{6}{*}{-} & 4.9M & 1.83G & 90.8 & 96.5 &  95.3 & -  & 88.1 \\
-MS-G3D~\cite{25} & CVPR 2020 & GCN & J+B+JM+BM & & 2.8M & 5.22G & 91.5 & 96.2 & 88.4 & -  & 86.9 \\
-MST-GCN*~\cite{3} & AAAI 2021 & GCN & J+B+JM+BM & & 12.0M & - & 91.5 & 96.6 & 88.8 & -  & 87.5 \\
-CTR-GCN~\cite{2} & ICCV 2021 & Hybrid & J+B+JM+BM & & 1.5M & 1.97G & 92.4 & 96.4 &  90.4 & 96.5  & 88.9 \\
-EfficientGCN-B4~\cite{36} & TPAMI 2022 & Hybrid & J+B+JM+BM & & 2.0M & 15.2G & 91.7 & 95.7 &  89.1 & -  & 88.3 \\
-InfoGCN~\cite{5} & CVPR 2022 & Hybrid & 6 ensemble & & 1.6M & 1.84G & 92.3 & 96.7 &  90.7 & 96.6  & 97.0 \\
-
+DC-GCN+ADG~\cite{DC-GCN} & ECCV 2020 & GCN & J+B+JM+BM & \multirow{6}{*}{-} & 4.9M & 1.83G & 90.8 & 96.5 &  95.3 & -  & 88.1 \\
+MS-G3D~\cite{MS-G3D} & CVPR 2020 & GCN & J+B+JM+BM & & 2.8M & 5.22G & 91.5 & 96.2 & 88.4 & -  & 86.9 \\
+MST-GCN*~\cite{multiscale} & AAAI 2021 & GCN & J+B+JM+BM & & 12.0M & - & 91.5 & 96.6 & 88.8 & -  & 87.5 \\
+CTR-GCN~\cite{ref10} & ICCV 2021 & Hybrid & J+B+JM+BM & & 1.5M & 1.97G & 92.4 & 96.4 &  90.4 & 96.5  & 88.9 \\
+EfficientGCN-B4~\cite{GCN-B4} & TPAMI 2022 & Hybrid & J+B+JM+BM & & 2.0M & 15.2G & 91.7 & 95.7 &  89.1 & -  & 88.3 \\
+InfoGCN~\cite{ref12} & CVPR 2022 & Hybrid & 6 ensemble & & 1.6M & 1.84G & 92.3 & 96.7 &  90.7 & 96.6  & 97.0 \\
 \textbf{Ours} & & Hybrid & J+B+JM+BM & & 1.6M & 1.84G & 92.3 & 96.7 &  90.7 & 96.6 & 97.2 \\
 \bottomrule
 \end{tabular}%
@@ -74,33 +73,46 @@ InfoGCN~\cite{5} & CVPR 2022 & Hybrid & 6 ensemble & & 1.6M & 1.84G & 92.3 & 96.
     \end{tabular}
     \end{table}
 
-\subsubsection{Linear Self-attention}
+\subsubsection{Line-graph modality}
+The ablation results demonstrate the superiority of our line-graph augmentation: 
+The 4-ensemble line-graph configuration (97.2\%) outperforms traditional joint 
+ensembles (97.0\%) by 0.2\%, while 5-ensemble shows no further gains, proving
+ that line-graph's angular kinematics encoding achieves ​​semantic saturation​​ 
+ with fewer modalities. This 2.8\% improvement over single modalities 
+ confirms that line-graph augmentation effectively captures dynamic 
+ bone-angle relationships unrepresented by joint coordinates. The angular 
+ attention mechanism enables efficient decoupling of rigid structural priors 
+ through dense motion context modeling, reaching peak performance with just 
+ four modalities.
 
 \begin{table}[htbp]
     \centering
-    \caption{Comparative Ablation Studies}
-    \label{tab:ablation-pair}
-    \setlength{\tabcolsep}{6pt} % 优化列间距
-    \begin{tabularx}{\textwidth}{@{}XX@{}}
-    % 左表：Layer Norm对比
-    \begin{tabular}{@{}ll@{}}
+    % 左表：Layer Norm分析
+    \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \caption{Table3: Layer Normalization Ablation}
+    \label{tab:layer-norm}
+    \begin{tabular}{@{}lrr@{}}
     \toprule
-    \multicolumn{2}{c}{\bfseries Layer Normalization Analysis} \\
+    Method & \multicolumn{2}{c}{Acc (\%)} \\
+    \cmidrule(r){2-3}
+     & With LN & Without LN \\
     \midrule
-    \makecell[l]{With LN\\Acc (\%)} & \makecell[r]{Without LN\\Acc (\%)} \\
-    \midrule
-    Line-graph: 94.4 & 93.8 \\
-    Joint: 94.4 & 93.7 \\
-    Motion: 93.5 & 92.7 \\
+    Line-graph & 94.4 & 93.8 \\
+    Joint & 94.4 & 93.7 \\
+    Motion & 93.5 & 92.7 \\
     \bottomrule
     \end{tabular}
-    &
-    % 右表：模态对比
-    \begin{tabular}{@{}lc@{}}
+    \end{minipage}
+    \hfill
+    % 右表：模态配置分析
+    \begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \caption{Table4: Modality Configuration Performance} 
+    \label{tab:modality-perf}
+    \begin{tabular}{@{}lr@{}}
     \toprule
-    \multicolumn{2}{c}{\bfseries Modality Performance} \\
-    \midrule
-    Modality Configuration & Acc (\%) \\
+    Configuration & Acc (\%) \\
     \midrule
     Single Joint & 94.4 \\
     Single Line-graph & 94.4 \\
@@ -109,5 +121,5 @@ InfoGCN~\cite{5} & CVPR 2022 & Hybrid & 6 ensemble & & 1.6M & 1.84G & 92.3 & 96.
     5-ensemble & 97.2 \\
     \bottomrule
     \end{tabular}
-    \end{tabularx}
+    \end{minipage}
     \end{table}

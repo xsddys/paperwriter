@@ -2,7 +2,7 @@
 
 Skeleton-based action recognition has emerged as a critical research 
 direction in computer vision, driven by its applications in healthcare 
-monitoring \cite{ref1}, human-computer interaction \cite{ref2}, and surveillance systems \cite{ref3}.
+monitoring \cite{ntu}, human-computer interaction \cite{ntu120}, and surveillance systems \cite{ref3}.
 
 
 
@@ -24,12 +24,7 @@ Therefore, this paper proposes a novel architecture that advances skeleton-based
 First, we introduce a Temporal Element-wise Multiplication Cumsum 
 Attention (TEMCA) mechanism to address temporal contextualization. 
 While temporal modeling remains pivotal for skeleton-based action 
-recognition, existing approaches predominantly rely on multi-scale 
-temporal convolution modules \cite{ref9,ref10,ref11,ref12} that lack 
-specialized architectural design for capturing complex temporal 
-dependencies. To address this, we draw inspiration from the Token 
-Statistic Transformer (ToST) \cite{tost} to devise a multi-scale linear 
-attention mechanism. Our TEMCA employs dilated context windows to 
+recognition, existing approaches predominantly rely on multi-scale temporal convolution modules \cite{ref9,ref10,ref11,ref12} that lack specialized architectural design for capturing complex temporal dependencies. To address this, we draw inspiration from the Token Statistic Transformer \cite{tost} to devise a multi-scale linear attention mechanism. Our TEMCA employs dilated context windows to 
 establish hierarchical receptive fields, explicitly capturing both 
 local motion nuances and global phase transitions. 
 %这一段看字数不够加上去
@@ -39,9 +34,7 @@ local motion nuances and global phase transitions.
 %non-sequential temporal relationships across action stages.
 
 %这个部分我不知道详细的实现，需要手动改一下
-Second, inspired by the activation-free method \cite{rewrite_stars}, we fundamentally redesign self-attention computation through 
-activation-free element-wise multiplication, resolving the efficiency 
-bottleneck of temporal modeling. 
+Second, inspired by the activation-free method \cite{rewrite_stars}, we fundamentally redesign self-attention computation through activation-free element-wise multiplication, resolving the efficiency bottleneck of temporal modeling. 
 While preserving attention's dynamic weighting capability, TEMCA 
 accelerates training convergence compared to standard 
 ToST variants, yet maintains state-of-the-art accuracy. 
@@ -64,19 +57,3 @@ to capture richer semantic information, effectively boosting prediction
 accuracy.
 
 
-
-注意力机制非常适合对多元时间序列数据中不同特征之间的复杂相互作用和依赖关系进行建模，注意力可以学习在每个时间步动态地权衡不同输入特征的重要性\cite{temporal-attention-useful}。
-自从\cite{attention-is-all-you-need}提出了Transformer以来，变换器架构在机器学习、计算机视觉、自然语言处理等多个应用领域取得了最先进的性能
-\cite{bert} \cite{radford2019language} \cite{brown2020language} \cite{chen2020generative} \cite{dosovitskiy2020image}。
-自注意力最显著的特点是，将特征映射到查询、键和值空间中，并通过点积乘法来动态地加权值。
-然而，这种实现方式并不高效，将会导致注意力的计算复杂度为$O(n^2)$，其中$n$是输入序列的长度。
-
-近期，（Wu等人）通过变分编码率优化提出了Token Statistics Transformer (ToST)\cite{tost}，
-其核心贡献包括：
-\begin{enumerate}
-    \item 建立了MCR2目标的变分上界形式，实现大规模矩阵谱函数的可分解计算；
-    \item 提出Token Statistics Self-Attention (TSSA)机制，通过二阶矩统计替代传统注意力中的成对相似性计算，将复杂度从O(n2)降至O(n)；
-    \item 在视觉、语言等任务上验证了其与标准Transformer相当的性能。
-\end{enumerate}
-
-然而，我们在实验中注意到，ToST在处理骨骼数据时，由于其理论推导而存在的部分结构，实际上反而影响了模型的性能。（待续）
